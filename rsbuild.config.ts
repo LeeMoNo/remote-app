@@ -2,13 +2,20 @@ import { defineConfig } from '@rsbuild/core';
 import { pluginReact } from '@rsbuild/plugin-react';
 import { pluginModuleFederation } from '@module-federation/rsbuild-plugin';
 
-// Cloudflare Pages 构建时会注入 CF_PAGES_URL
+// Cloudflare Pages 构建时会注入 CF_PAGES_URL（已含 https://）
 const REMOTE_PROD_URL = 'https://remote-app-9j8.pages.dev';
+
+function toAssetPrefix(url: string): string {
+  const withProtocol =
+    url.startsWith('http://') || url.startsWith('https://') ? url : `https://${url}`;
+  return withProtocol.endsWith('/') ? withProtocol : `${withProtocol}/`;
+}
+
 const assetPrefix =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:3001/'
     : process.env.CF_PAGES_URL
-      ? `https://${process.env.CF_PAGES_URL}/`
+      ? toAssetPrefix(process.env.CF_PAGES_URL)
       : `${REMOTE_PROD_URL}/`;
 
 export default defineConfig({
