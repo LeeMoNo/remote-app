@@ -38,3 +38,4 @@ To learn more about Rsbuild, check out the following resources:
 
 
 微前端：Remote 应用 (提供方)
+项目上传到GitHub，同时也部署到Cloudflare平台作为静态文件
